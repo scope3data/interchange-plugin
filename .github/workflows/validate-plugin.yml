@@ -1,21 +1,30 @@
 name: Validate Claude Plugin
 
-# Runs Anthropic's own `claude plugin validate --strict` against this
-# repo's manifest — the mirror-side half of the check the source repo
-# (scope3data/agentic-api) already runs in
-# .github/workflows/validate-claude-plugin.yml before content ever reaches
-# here. This confirms the manifest validates standalone, without the
-# private repo's context, per the Plugin Directory submission runbook in
-# docs/spec/sales-agents/claude-plugin-public-mirror.md.
+# Runs Anthropic's own `claude plugin validate --strict` — the authoritative
+# validator, not a reconstruction of it — against both manifests at this
+# repo's root.
 #
-# Bump CLAUDE_CODE_VERSION deliberately when validating against a newer CLI
-# release; it is pinned, not @latest, so this check is reproducible.
+# This file is composed and synced from scope3data/agentic-api's own
+# .github/workflows/validate-claude-plugin.yml and .nvmrc by
+# scripts/plugin-distribution/claude-plugin-mirror — do not hand-edit it
+# here, the next sync overwrites it. See
+# https://github.com/scope3data/agentic-api/blob/main/docs/developing/claude-plugin-mirror.md.
+#
+# `claude plugin validate --strict <dir>` validates only one manifest per
+# invocation, and picks marketplace.json over plugin.json when a directory
+# has both — so this workflow runs two explicit steps, one per manifest,
+# rather than a single `claude plugin validate --strict .`.
+#
+# CLAUDE_CODE_VERSION is pinned, not @latest, so this check is reproducible;
+# it is kept in sync with the source repo's own pinned version by the
+# composer, never hand-edited here.
 
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
+
+permissions:
+  contents: read
 
 env:
   CLAUDE_CODE_VERSION: 2.1.251
@@ -26,12 +35,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22
+          node-version: '26.4.0'
 
       - name: Validate plugin manifest
-        run: npx --yes "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}" plugin validate --strict .
+        run: npx --yes "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}" plugin validate --strict .claude-plugin/plugin.json
+
+      - name: Validate marketplace manifest
+        run: npx --yes "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}" plugin validate --strict .claude-plugin/marketplace.json
