@@ -1,0 +1,28 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "interchange-plugin",
+  "description": "Scope3 Interchange plugins for Claude Code and Cowork.",
+  "owner": {
+    "name": "Scope3 PBC",
+    "email": "engineering@scope3.com"
+  },
+  "plugins": [
+    {
+      "name": "interchange",
+      "description": "Plan, buy, and manage advertising through the Interchange V3 MCP server.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./",
+      "category": "productivity",
+      "keywords": [
+        "advertising",
+        "campaigns",
+        "media-buying",
+        "mcp"
+      ],
+      "homepage": "https://docs.interchange.io"
+    }
+  ]
+}
