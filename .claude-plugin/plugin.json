@@ -9,5 +9,6 @@
   },
   "homepage": "https://docs.interchange.io",
   "repository": "https://github.com/scope3data/interchange-plugin",
+  "license": "Apache-2.0",
   "keywords": ["advertising", "campaigns", "media-buying", "mcp"]
 }
