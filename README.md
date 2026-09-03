@@ -16,6 +16,8 @@ returns.
 ## What's included
 
 - `.claude-plugin/plugin.json` — the Claude Code / Cowork plugin manifest.
+- `.claude-plugin/marketplace.json` — lets this repo be added directly as a
+  marketplace (`/plugin marketplace add`, above).
 - `.mcp.json` — the remote Interchange V3 MCP connection (OAuth, no keys).
 - `skills/` — three canonical buyer skills: get an account ready to buy,
   set up a campaign, and manage a live campaign.
