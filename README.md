@@ -22,6 +22,7 @@ returns.
 - `skills/` — three canonical buyer skills: get an account ready to buy,
   set up a campaign, and manage a live campaign.
 - `assets/` — the directory and composer icons.
+- `LICENSE` — Apache License, Version 2.0 (see License, below).
 
 Every durable change made through these skills remains confirmation-gated
 by the underlying Interchange tool contract.
@@ -29,6 +30,10 @@ by the underlying Interchange tool contract.
 ## Documentation
 
 Full product documentation lives at https://docs.interchange.io.
+
+## License
+
+Licensed under the [Apache License, Version 2.0](LICENSE). Copyright 2026 Scope3 PBC.
 
 ## About this repository
 
