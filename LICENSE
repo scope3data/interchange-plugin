@@ -1,0 +1,15 @@
+Copyright (c) 2026 Scope3 PBC. All rights reserved.
+
+This repository and its contents (including, without limitation, all
+manifests, skill definitions, and other files) are the proprietary property
+of Scope3 PBC. No license, express or implied, to reproduce, modify,
+distribute, sublicense, or create derivative works is granted except as
+Scope3 PBC may separately agree to in writing.
+
+This default "all rights reserved" posture reflects the current state of
+scope3data/agentic-api, the private repository this package is generated
+from and synced by. It is not a final licensing decision for public
+distribution — see docs/spec/sales-agents/claude-plugin-public-mirror.md
+("License and visibility review checklist") in scope3data/agentic-api for
+the open question this default is standing in for, pending a decision by
+the repository owner.

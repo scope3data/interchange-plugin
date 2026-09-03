@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "interchange": {
+      "type": "http",
+      "url": "https://api.interchange.io/mcp/v3"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "interchange",
+  "displayName": "Interchange",
+  "description": "Plan, buy, and manage advertising through the Interchange V3 MCP server.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Scope3 PBC",
+    "url": "https://interchange.io"
+  },
+  "homepage": "https://docs.interchange.io",
+  "repository": "https://github.com/scope3data/interchange-plugin",
+  "keywords": ["advertising", "campaigns", "media-buying", "mcp"]
+}
