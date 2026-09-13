@@ -1,0 +1,20 @@
+{
+  "name": "buyer-reporting",
+  "displayName": "Buyer Reporting",
+  "description": "Inspect buyer campaign delivery and reporting in Interchange.",
+  "version": "1.0.0+f588c076d2d3",
+  "author": {
+    "name": "Scope3 PBC",
+    "url": "https://interchange.io"
+  },
+  "homepage": "https://docs.interchange.io",
+  "repository": "https://github.com/scope3data/interchange-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "advertising",
+    "buyer",
+    "reporting",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json"
+}

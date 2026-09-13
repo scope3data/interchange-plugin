@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0",
+  "skillId": "buy-from-seller",
+  "skillVersion": "1.3.0",
+  "endpoint": "external-adcp-endpoint",
+  "modelPolicy": "deterministic-no-model",
+  "scenarios": [
+    {
+      "id": "discover-and-verify-seller-endpoint",
+      "title": "Discover a seller's verified AdCP endpoint from its public listing",
+      "description": "Fetch the public seller page, follow the machine-readable listing link, confirm the card identity matches the named seller, and select the verified `adcp` action URL byte-for-byte.",
+      "mutationBoundary": "Read-only against the public listing and the seller's own AdCP endpoint. Never mutates Interchange state; any resulting media buy is a real transaction on the seller's endpoint, not a sandbox fixture.",
+      "steps": [
+        {
+          "id": "fetch-public-seller-page",
+          "ordinal": 1,
+          "dependsOn": [],
+          "action": "fetch_public_page",
+          "mutates": false,
+          "evidence": {
+            "requiredKeys": ["linkAlternate"],
+            "forbiddenKeys": ["credentials"]
+          }
+        },
+        {
+          "id": "follow-machine-readable-listing",
+          "ordinal": 2,
+          "dependsOn": ["fetch-public-seller-page"],
+          "action": "fetch_listing_json",
+          "mutates": false,
+          "evidence": {
+            "requiredKeys": ["actions"],
+            "forbiddenKeys": ["credentials"]
+          }
+        },
+        {
+          "id": "verify-identity-and-select-adcp-action",
+          "ordinal": 3,
+          "dependsOn": ["follow-machine-readable-listing"],
+          "action": "select_adcp_action",
+          "mutates": false,
+          "evidence": {
+            "requiredKeys": ["actionUrl"],
+            "forbiddenKeys": ["credentials"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "reject-publication-with-no-adcp-action",
+      "title": "Stop when the publication does not advertise a direct buying endpoint",
+      "description": "When the listing carries no verified `adcp` action, report that this publication does not currently advertise a direct buying endpoint rather than inventing `/mcp`, `/mcp/v3`, or a Seller ID.",
+      "mutationBoundary": "Read-only; the scenario terminates before any endpoint connection is attempted.",
+      "steps": [
+        {
+          "id": "fetch-listing-without-adcp-action",
+          "ordinal": 1,
+          "dependsOn": [],
+          "action": "fetch_listing_json",
+          "mutates": false,
+          "evidence": {
+            "requiredKeys": ["actions"],
+            "forbiddenKeys": ["credentials"]
+          }
+        },
+        {
+          "id": "report-no-direct-endpoint",
+          "ordinal": 2,
+          "dependsOn": ["fetch-listing-without-adcp-action"],
+          "action": "report_missing_adcp_action",
+          "mutates": false,
+          "evidence": {
+            "requiredKeys": ["reason"],
+            "forbiddenKeys": ["credentials"]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "3.0",
+  "id": "manage-a-campaign",
+  "name": "Manage a Campaign",
+  "version": "1.1.0",
+  "description": "Review delivery and safely update, launch, pause, or archive an existing buyer campaign.",
+  "steward": {
+    "owner": "bokelley"
+  },
+  "entrypoint": "SKILL.md",
+  "assets": [
+    {
+      "route": "SKILL.md",
+      "file": "SKILL.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "manifest.json",
+      "file": "manifest.json",
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "route": "references/scenarios.json",
+      "file": "references/scenarios.json",
+      "contentType": "application/json; charset=utf-8"
+    }
+  ],
+  "applicability": {
+    "audiences": [
+      {
+        "accountKind": "buyer",
+        "clientChannels": ["standard", "white_label_chatgpt"],
+        "requiredCapabilities": [],
+        "requiredFeatureEntitlements": []
+      }
+    ]
+  },
+  "distribution": {
+    "mcpAccountKinds": ["buyer"],
+    "submissionBundleAccountKinds": ["buyer"]
+  },
+  "tools": {
+    "required": [
+      "get_status",
+      "search",
+      "get",
+      "get_delivery",
+      "save_campaign"
+    ],
+    "optional": [
+      "save_creative",
+      "save_creative_collection",
+      "upload_creative_asset"
+    ]
+  },
+  "documentation": [
+    "mintlify/v2/setup/v3/buyer-workflows.mdx",
+    "mintlify/v2/skill.mdx"
+  ],
+  "evaluation": {
+    "acceptance": {
+      "scenarioAsset": "references/scenarios.json",
+      "scenarioIds": ["buyer-status-read"],
+      "scenarioContract": "deterministic-v3-tool-v1"
+    },
+    "telemetry": {
+      "correlationSkillId": "manage-a-campaign@1.1.0",
+      "outcomeSignals": [
+        "workflow_terminal_state",
+        "scenario_assertion_results",
+        "cleanup_terminal_state"
+      ]
+    }
+  }
+}

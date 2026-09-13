@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "scenarios": [
+    {
+      "id": "local-preview",
+      "description": "Inspect locally and compare the sanitized receipt with the expected creative count and mode.",
+      "mutates": false,
+      "requiresConfirmation": false
+    },
+    {
+      "id": "confirmed-corpus-report",
+      "description": "After explicit user confirmation, submit only the sanitized receipt and expected-versus-observed summary for review.",
+      "mutates": true,
+      "requiresConfirmation": true
+    }
+  ]
+}

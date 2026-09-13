@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "3.0",
+  "id": "buy-from-seller",
+  "name": "Buy from a Seller",
+  "version": "1.3.0",
+  "description": "Discover one seller's verified AdCP endpoint from its public listing and transact as an entitled buyer.",
+  "steward": {
+    "owner": "bokelley"
+  },
+  "entrypoint": "SKILL.md",
+  "assets": [
+    {
+      "route": "SKILL.md",
+      "file": "SKILL.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "manifest.json",
+      "file": "manifest.json",
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "route": "references/scenarios.json",
+      "file": "references/scenarios.json",
+      "contentType": "application/json; charset=utf-8"
+    }
+  ],
+  "applicability": {
+    "audiences": [
+      {
+        "accountKind": "buyer",
+        "clientChannels": ["standard", "white_label_chatgpt"],
+        "requiredCapabilities": [],
+        "requiredFeatureEntitlements": []
+      }
+    ]
+  },
+  "distribution": {
+    "mcpAccountKinds": [],
+    "submissionBundleAccountKinds": []
+  },
+  "tools": {
+    "required": [],
+    "optional": []
+  },
+  "documentation": [
+    "mintlify/v2/skill.mdx",
+    "mintlify/v2/buyer/storefronts/discovery-card.mdx"
+  ],
+  "evaluation": {
+    "acceptance": {
+      "scenarioAsset": "references/scenarios.json",
+      "scenarioIds": [
+        "discover-and-verify-seller-endpoint",
+        "reject-publication-with-no-adcp-action"
+      ]
+    },
+    "telemetry": {
+      "correlationSkillId": "buy-from-seller@1.3.0",
+      "outcomeSignals": [
+        "endpoint_discovered",
+        "endpoint_identity_verified",
+        "endpoint_missing_adcp_action"
+      ]
+    }
+  }
+}

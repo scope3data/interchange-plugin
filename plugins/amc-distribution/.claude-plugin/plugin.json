@@ -1,0 +1,20 @@
+{
+  "name": "amc-distribution",
+  "displayName": "AMC Distribution",
+  "description": "Prepare and distribute an Agentic Media Company through supported agent channels.",
+  "version": "1.0.0+5156e005ef0d",
+  "author": {
+    "name": "Scope3 PBC",
+    "url": "https://interchange.io"
+  },
+  "homepage": "https://docs.interchange.io",
+  "repository": "https://github.com/scope3data/interchange-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "advertising",
+    "distribution",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "amc-self-serve-buyer",
+  "displayName": "AMC Self-Serve Buyer",
+  "description": "Bundle buyer workflows for an Agentic Media Company's own self-serve plugin.",
+  "version": "1.0.0+6430995f3b2a",
+  "author": {
+    "name": "Scope3 PBC",
+    "url": "https://interchange.io"
+  },
+  "homepage": "https://docs.interchange.io",
+  "repository": "https://github.com/scope3data/interchange-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "advertising",
+    "buyer",
+    "self-serve",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/"
+}

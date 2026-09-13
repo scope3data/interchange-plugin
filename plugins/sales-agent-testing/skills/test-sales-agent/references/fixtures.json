@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "2.0",
+  "skillId": "test-sales-agent",
+  "skillVersion": "1.5.1",
+  "privacy": "fictional-synthetic-only",
+  "fixtures": [
+    {
+      "id": "display-awareness-v1",
+      "kind": "brief",
+      "executable": true,
+      "contentSha256": "sha256:6d5f0881956c8e9a545ce55f1b0e6d668632cd7c3909f7b8d6e428ca9cade4ed",
+      "brief": "Promote a fictional outdoor brand to adults in the United States on owned-and-operated display inventory.",
+      "currency": "USD",
+      "budget": 100,
+      "flightDays": 30,
+      "expectedFormatKinds": ["image"]
+    },
+    {
+      "id": "ctv-awareness-v1",
+      "kind": "brief",
+      "executable": true,
+      "contentSha256": "sha256:c635e4bf5b39971b924c33cdc5ca82c891411716c6f9986b3b6dc1598614e343",
+      "brief": "Promote a fictional streaming series to adults in the United States on owned-and-operated connected TV inventory.",
+      "currency": "USD",
+      "budget": 100,
+      "flightDays": 30,
+      "expectedFormatKinds": ["video_vast"]
+    },
+    {
+      "id": "image-300x250-metadata-v1",
+      "kind": "creative",
+      "executable": false,
+      "formatKind": "image",
+      "params": {
+        "width": 300,
+        "height": 250
+      },
+      "reason": "Metadata-only placeholder. No approved public asset exists, so creative propagation and readback are not executable in version 1.5.1."
+    },
+    {
+      "id": "video-vast-30s-metadata-v1",
+      "kind": "creative",
+      "executable": false,
+      "formatKind": "video_vast",
+      "params": {
+        "duration_ms_exact": 30000
+      },
+      "reason": "Metadata-only placeholder. No approved public asset exists, so creative propagation and readback are not executable in version 1.5.1."
+    }
+  ]
+}

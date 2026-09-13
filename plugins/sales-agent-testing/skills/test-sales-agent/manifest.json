@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "3.0",
+  "id": "test-sales-agent",
+  "name": "Test a Sales Agent",
+  "version": "1.5.1",
+  "description": "Validate an AdCP Sales Agent or Interchange Storefront through an owned-inventory advertiser sandbox and ordinary V3 APIs.",
+  "steward": {
+    "owner": "bokelley"
+  },
+  "entrypoint": "SKILL.md",
+  "assets": [
+    {
+      "route": "SKILL.md",
+      "file": "SKILL.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "manifest.json",
+      "file": "manifest.json",
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "route": "references/scenarios.json",
+      "file": "references/scenarios.json",
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "route": "references/fixtures.json",
+      "file": "references/fixtures.json",
+      "contentType": "application/json; charset=utf-8"
+    }
+  ],
+  "applicability": {
+    "audiences": [
+      {
+        "accountKind": "buyer",
+        "clientChannels": ["standard", "white_label_chatgpt"],
+        "requiredCapabilities": [],
+        "requiredFeatureEntitlements": []
+      },
+      {
+        "accountKind": "seller",
+        "clientChannels": ["standard", "white_label_chatgpt"],
+        "requiredCapabilities": ["own_supply_campaigns"],
+        "requiredFeatureEntitlements": []
+      }
+    ]
+  },
+  "distribution": {
+    "mcpAccountKinds": [],
+    "submissionBundleAccountKinds": []
+  },
+  "tools": {
+    "required": [
+      "get_status",
+      "search",
+      "get",
+      "save_advertiser",
+      "save_connection",
+      "save_campaign",
+      "save_media_buy",
+      "save_creative",
+      "get_delivery"
+    ],
+    "optional": []
+  },
+  "documentation": [
+    "mintlify/v2/setup/v3/seller-workflows.mdx",
+    "mintlify/v2/features/sandbox.mdx"
+  ],
+  "evaluation": {
+    "acceptance": {
+      "scenarioAsset": "references/scenarios.json",
+      "scenarioIds": ["brief-discovery", "own-supply-transaction"]
+    },
+    "telemetry": {
+      "correlationSkillId": "test-sales-agent@1.5.1",
+      "outcomeSignals": [
+        "workflow_terminal_state",
+        "scenario_assertion_results",
+        "cleanup_terminal_state"
+      ]
+    }
+  }
+}
