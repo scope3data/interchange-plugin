@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.interchange.io/skills/inspect-tag-sheet/1.0.0/references/receipt.schema.json",
+  "title": "Creative manifest parse receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": { "status": { "const": "parsed" } },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": { "mode": {} },
+        "required": ["mode"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "status": { "const": "rejected" } },
+        "required": ["status"]
+      },
+      "then": {
+        "not": {
+          "properties": { "mode": {} },
+          "required": ["mode"]
+        }
+      }
+    }
+  ],
+  "required": [
+    "schemaVersion",
+    "parser",
+    "profile",
+    "status",
+    "rowCount",
+    "matchedSheetCount",
+    "workbookShape",
+    "recognizedRoles",
+    "appliedRuleIds",
+    "variantCounts",
+    "diagnosticCodes"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "parser": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": { "const": "scope3-creative-manifest" },
+        "version": { "const": "1.0.0" }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": { "const": "scope3-tag-sheet" },
+        "version": { "const": "1.0.0" }
+      }
+    },
+    "status": { "enum": ["parsed", "rejected"] },
+    "mode": { "enum": ["container", "sidecar", "source", "empty"] },
+    "rowCount": { "type": "integer", "minimum": 0, "maximum": 500 },
+    "matchedSheetCount": { "type": "integer", "minimum": 0, "maximum": 10 },
+    "workbookShape": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scannedSheetCount", "sheetShapeBuckets", "headerRoleSets"],
+      "properties": {
+        "scannedSheetCount": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "sheetShapeBuckets": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "type": "string",
+            "pattern": "^(1|2-10|11-100|101-500|>500)x(1|2-10|11-100|101-500|>500)$"
+          }
+        },
+        "headerRoleSets": {
+          "type": "array",
+          "maxItems": 60,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 6,
+            "items": {
+              "enum": [
+                "declared_size",
+                "display_markup",
+                "filename",
+                "internal_redirect",
+                "name",
+                "vast_url"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "recognizedRoles": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "declared_size",
+          "display_markup",
+          "filename",
+          "internal_redirect",
+          "name",
+          "unparsed_variant",
+          "vast_url"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "appliedRuleIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9._-]+$" },
+      "uniqueItems": true
+    },
+    "variantCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["displayMarkup", "vastUrl", "internalRedirect", "unparsed"],
+      "properties": {
+        "displayMarkup": { "type": "integer", "minimum": 0 },
+        "vastUrl": { "type": "integer", "minimum": 0 },
+        "internalRedirect": { "type": "integer", "minimum": 0 },
+        "unparsed": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "diagnosticCodes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "archive_limit_exceeded",
+          "empty_manifest",
+          "malformed_workbook",
+          "source_requires_destination"
+        ]
+      },
+      "uniqueItems": true
+    }
+  }
+}

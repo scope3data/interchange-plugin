@@ -1,0 +1,21 @@
+{
+  "name": "buyer-creative-management",
+  "displayName": "Buyer Creative Management",
+  "description": "Prepare and inspect buyer creative inputs for campaign execution.",
+  "version": "1.0.0+bc466507cd61",
+  "author": {
+    "name": "Scope3 PBC",
+    "url": "https://interchange.io"
+  },
+  "homepage": "https://docs.interchange.io",
+  "repository": "https://github.com/scope3data/interchange-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "advertising",
+    "buyer",
+    "creative",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/"
+}

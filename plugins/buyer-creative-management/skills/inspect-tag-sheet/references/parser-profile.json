@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "id": "scope3-tag-sheet",
+  "version": "1.0.0",
+  "formats": ["csv", "xls", "xlsx"],
+  "semanticRoles": [
+    "name",
+    "filename",
+    "declared_size",
+    "display_markup",
+    "vast_url",
+    "internal_redirect"
+  ],
+  "headerNormalization": "lowercase_remove_non_alphanumeric",
+  "headerAliases": {
+    "filename": ["filename", "file", "asset", "assetname", "assetfilename"],
+    "size": ["size", "dimensions", "dimension", "adsize", "creativesize"],
+    "width": ["width", "w"],
+    "height": ["height", "h"],
+    "name": [
+      "name",
+      "placement",
+      "placementname",
+      "creativename",
+      "creative",
+      "adname",
+      "ad"
+    ]
+  },
+  "selectionRules": [
+    {
+      "id": "display.generic",
+      "headers": [
+        "tag",
+        "code",
+        "snippet",
+        "adtag",
+        "tagcode",
+        "html",
+        "markup",
+        "creativecode"
+      ],
+      "variant": "Tag"
+    },
+    {
+      "id": "cm360.display.iframe_javascript",
+      "headers": ["iframesjavascripttag", "iframejavascripttag"],
+      "variant": "Iframes/JavaScript"
+    },
+    {
+      "id": "cm360.display.javascript",
+      "headers": ["javascripttag"],
+      "variant": "JavaScript"
+    },
+    {
+      "id": "cm360.display.standard",
+      "headers": ["standardtag"],
+      "variant": "Standard"
+    },
+    {
+      "id": "cm360.legacy.iframe_javascript",
+      "headers": ["legacyiframesjavascripttag", "legacyiframejavascripttag"],
+      "variant": "Legacy Iframes/JavaScript"
+    },
+    {
+      "id": "cm360.legacy.javascript",
+      "headers": ["legacyjavascripttag"],
+      "variant": "Legacy JavaScript"
+    },
+    {
+      "id": "cm360.legacy.standard",
+      "headers": ["legacystandardtag"],
+      "variant": "Legacy Standard"
+    }
+  ],
+  "deferredRules": [
+    {
+      "id": "cm360.internal_redirect",
+      "headers": ["internalredirecttag"],
+      "variant": "Internal Redirect",
+      "kind": "internal_redirect"
+    },
+    {
+      "id": "cm360.vast.2",
+      "headers": ["vast20prefetchtag"],
+      "variant": "VAST 2.0 Pre-fetch",
+      "kind": "vast_url",
+      "vastVersion": "2.0"
+    },
+    {
+      "id": "cm360.vast.3",
+      "headers": ["vast30prefetchtag"],
+      "variant": "VAST 3.0 Pre-fetch",
+      "kind": "vast_url",
+      "vastVersion": "3.0"
+    },
+    {
+      "id": "cm360.vast.4",
+      "headers": ["vast40prefetchtag"],
+      "variant": "VAST 4.0 Pre-fetch",
+      "kind": "vast_url",
+      "vastVersion": "4.0"
+    }
+  ],
+  "limits": {
+    "inputBytes": 5242880,
+    "expandedXlsxBytes": 26214400,
+    "worksheets": 10,
+    "headerScanRows": 60,
+    "rows": 500,
+    "columns": 100,
+    "cellCharacters": 20000,
+    "sizesPerRow": 30
+  }
+}

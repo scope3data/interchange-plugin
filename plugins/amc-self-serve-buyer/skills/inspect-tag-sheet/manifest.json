@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "3.0",
+  "id": "inspect-tag-sheet",
+  "name": "Inspect a Tag Sheet",
+  "version": "1.0.0",
+  "description": "Preview CSV, XLS, and XLSX advertising tag sheets locally and report a content-free parser receipt when a mapping needs improvement.",
+  "steward": {
+    "owner": "bokelley"
+  },
+  "entrypoint": "SKILL.md",
+  "assets": [
+    {
+      "route": "SKILL.md",
+      "file": "SKILL.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "manifest.json",
+      "file": "manifest.json",
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "route": "THIRD_PARTY_NOTICES.md",
+      "file": "THIRD_PARTY_NOTICES.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "scripts/inspect-tag-sheet.mjs",
+      "file": "scripts/inspect-tag-sheet.mjs",
+      "contentType": "text/javascript; charset=utf-8"
+    },
+    {
+      "route": "references/parser-profile.json",
+      "file": "references/parser-profile.json",
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "route": "references/receipt.schema.json",
+      "file": "references/receipt.schema.json",
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "route": "references/scenarios.json",
+      "file": "references/scenarios.json",
+      "contentType": "application/json; charset=utf-8"
+    }
+  ],
+  "applicability": {
+    "audiences": [
+      {
+        "accountKind": "buyer",
+        "clientChannels": ["standard", "white_label_chatgpt"],
+        "requiredCapabilities": [],
+        "requiredFeatureEntitlements": []
+      }
+    ]
+  },
+  "distribution": {
+    "mcpAccountKinds": [],
+    "submissionBundleAccountKinds": []
+  },
+  "tools": {
+    "required": [],
+    "optional": ["save_ask"]
+  },
+  "documentation": [
+    "mintlify/v2/buyer/creatives/bring-your-own-creative.mdx",
+    "mintlify/v2/skill.mdx"
+  ],
+  "evaluation": {
+    "acceptance": {
+      "scenarioAsset": "references/scenarios.json",
+      "scenarioIds": ["local-preview", "confirmed-corpus-report"]
+    },
+    "telemetry": {
+      "correlationSkillId": "inspect-tag-sheet@1.0.0",
+      "outcomeSignals": [
+        "local_parse_terminal_state",
+        "expected_observed_match",
+        "confirmed_report_state"
+      ]
+    }
+  }
+}

@@ -1,0 +1,638 @@
+{
+  "schemaVersion": "2.0",
+  "skillId": "test-sales-agent",
+  "skillVersion": "1.5.1",
+  "endpoint": "/mcp/v3",
+  "modelPolicy": "deterministic-no-model",
+  "scenarios": [
+    {
+      "id": "brief-discovery",
+      "title": "Discover terminal Products for one synthetic brief",
+      "mutationBoundary": "Creates one sandbox Advertiser and one draft Campaign, temporarily enables the exact own Seller for that run-owned Advertiser, and restores DEFAULT before Advertiser archival. It never stages a MediaBuy.",
+      "cleanupPolicy": "always-reverse-order",
+      "steps": [
+        {
+          "id": "check-account-status",
+          "ordinal": 1,
+          "dependsOn": [],
+          "tool": "get_status",
+          "role": "ordinary",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 2,
+            "retryDelayMs": 1000
+          },
+          "evidence": {
+            "requiredKeys": ["accountId", "state"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"]
+          },
+          "cleanup": []
+        },
+        {
+          "id": "resolve-own-seller",
+          "ordinal": 2,
+          "dependsOn": ["check-account-status"],
+          "tool": "search",
+          "role": "ordinary",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 2,
+            "retryDelayMs": 1000
+          },
+          "evidence": {
+            "requiredKeys": ["id"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"]
+          },
+          "cleanup": []
+        },
+        {
+          "id": "create-sandbox-advertiser",
+          "ordinal": 3,
+          "dependsOn": ["resolve-own-seller"],
+          "tool": "save_advertiser",
+          "role": "ordinary",
+          "mutates": true,
+          "mutationAuthority": "sandbox-bound",
+          "fixtureIds": ["display-awareness-v1"],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 3,
+            "retryDelayMs": 1000
+          },
+          "evidence": {
+            "requiredKeys": ["action", "advertiserId", "sandbox"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"],
+            "requiredValues": {
+              "action": "created",
+              "sandbox": true
+            }
+          },
+          "cleanup": [
+            {
+              "id": "archive-advertiser",
+              "tool": "save_advertiser",
+              "execution": {
+                "timeoutMs": 30000,
+                "maxAttempts": 3,
+                "retryDelayMs": 1000
+              },
+              "evidence": {
+                "requiredKeys": ["advertiserId", "action"],
+                "optionalKeys": ["requestId", "traceId", "activityId"],
+                "forbiddenKeys": ["credentials"],
+                "requiredValues": {
+                  "action": "archived"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "enable-advertiser-seller",
+          "ordinal": 4,
+          "dependsOn": ["create-sandbox-advertiser"],
+          "tool": "save_connection",
+          "role": "ordinary",
+          "mutates": true,
+          "mutationAuthority": "sandbox-bound",
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 1,
+            "retryDelayMs": 0
+          },
+          "evidence": {
+            "requiredKeys": [
+              "action",
+              "sellerId",
+              "advertiserId",
+              "decision",
+              "effectiveDesired",
+              "reason"
+            ],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"],
+            "requiredValues": {
+              "action": "advertiser_activation_updated",
+              "decision": "ENABLED",
+              "effectiveDesired": true,
+              "reason": "advertiser_enabled"
+            }
+          },
+          "cleanup": [
+            {
+              "id": "restore-advertiser-seller-default",
+              "tool": "save_connection",
+              "execution": {
+                "timeoutMs": 30000,
+                "maxAttempts": 3,
+                "retryDelayMs": 1000
+              },
+              "evidence": {
+                "requiredKeys": [
+                  "action",
+                  "sellerId",
+                  "advertiserId",
+                  "decision",
+                  "effectiveDesired",
+                  "reason"
+                ],
+                "optionalKeys": ["requestId", "traceId", "activityId"],
+                "forbiddenKeys": ["credentials"],
+                "requiredValues": {
+                  "action": "advertiser_activation_updated",
+                  "decision": "DEFAULT"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "create-draft-campaign",
+          "ordinal": 5,
+          "dependsOn": ["enable-advertiser-seller"],
+          "tool": "save_campaign",
+          "role": "ordinary",
+          "mutates": true,
+          "mutationAuthority": "sandbox-bound",
+          "fixtureIds": ["display-awareness-v1"],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 1,
+            "retryDelayMs": 0
+          },
+          "evidence": {
+            "requiredKeys": ["action", "campaignId", "revision", "phase"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"],
+            "requiredValues": {
+              "action": "created",
+              "phase": "draft"
+            }
+          },
+          "cleanup": [
+            {
+              "id": "archive-campaign",
+              "tool": "save_campaign",
+              "execution": {
+                "timeoutMs": 30000,
+                "maxAttempts": 3,
+                "retryDelayMs": 1000
+              },
+              "evidence": {
+                "requiredKeys": ["campaignId", "action"],
+                "optionalKeys": ["requestId", "traceId", "activityId"],
+                "forbiddenKeys": ["credentials"],
+                "requiredValues": {
+                  "action": "archived"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "select-terminal-product-catalog",
+          "ordinal": 6,
+          "dependsOn": ["create-draft-campaign"],
+          "tool": "get",
+          "role": "terminal-product-selection",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 90000,
+            "maxAttempts": 5,
+            "retryDelayMs": 2000
+          },
+          "evidence": {
+            "requiredKeys": [
+              "sellerId",
+              "productQueryId",
+              "productQueryRevision",
+              "resultsComplete",
+              "products"
+            ],
+            "optionalKeys": [
+              "executionId",
+              "requestId",
+              "traceId",
+              "activityId"
+            ],
+            "forbiddenKeys": ["credentials", "staleProductId"]
+          },
+          "cleanup": []
+        },
+        {
+          "id": "read-draft-campaign",
+          "ordinal": 7,
+          "dependsOn": ["select-terminal-product-catalog"],
+          "tool": "get",
+          "role": "ordinary",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 2,
+            "retryDelayMs": 1000
+          },
+          "evidence": {
+            "requiredKeys": ["campaignId", "revision", "phase"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"]
+          },
+          "cleanup": []
+        }
+      ]
+    },
+    {
+      "id": "own-supply-transaction",
+      "title": "Stage and activate one sandbox own-supply transaction",
+      "mutationBoundary": "Creates one sandbox Advertiser, Campaign, MediaBuy, and metadata-only Creative; activates only the sandbox Campaign; archives the Creative, containing Campaign, and Advertiser in reverse order; and reports the MediaBuy because V3 has no independent cancellation call.",
+      "cleanupPolicy": "always-reverse-order",
+      "steps": [
+        {
+          "id": "check-account-status",
+          "ordinal": 1,
+          "dependsOn": [],
+          "tool": "get_status",
+          "role": "ordinary",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 2,
+            "retryDelayMs": 1000
+          },
+          "evidence": {
+            "requiredKeys": ["accountId", "state"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"]
+          },
+          "cleanup": []
+        },
+        {
+          "id": "resolve-own-seller",
+          "ordinal": 2,
+          "dependsOn": ["check-account-status"],
+          "tool": "search",
+          "role": "ordinary",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 2,
+            "retryDelayMs": 1000
+          },
+          "evidence": {
+            "requiredKeys": ["id"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"]
+          },
+          "cleanup": []
+        },
+        {
+          "id": "create-sandbox-advertiser",
+          "ordinal": 3,
+          "dependsOn": ["resolve-own-seller"],
+          "tool": "save_advertiser",
+          "role": "ordinary",
+          "mutates": true,
+          "mutationAuthority": "sandbox-bound",
+          "fixtureIds": ["display-awareness-v1"],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 3,
+            "retryDelayMs": 1000
+          },
+          "evidence": {
+            "requiredKeys": ["action", "advertiserId", "sandbox"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"],
+            "requiredValues": {
+              "action": "created",
+              "sandbox": true
+            }
+          },
+          "cleanup": [
+            {
+              "id": "archive-advertiser",
+              "tool": "save_advertiser",
+              "execution": {
+                "timeoutMs": 30000,
+                "maxAttempts": 3,
+                "retryDelayMs": 1000
+              },
+              "evidence": {
+                "requiredKeys": ["advertiserId", "action"],
+                "optionalKeys": ["requestId", "traceId", "activityId"],
+                "forbiddenKeys": ["credentials"],
+                "requiredValues": {
+                  "action": "archived"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "create-draft-campaign",
+          "ordinal": 4,
+          "dependsOn": ["create-sandbox-advertiser"],
+          "tool": "save_campaign",
+          "role": "ordinary",
+          "mutates": true,
+          "mutationAuthority": "sandbox-bound",
+          "fixtureIds": ["display-awareness-v1"],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 1,
+            "retryDelayMs": 0
+          },
+          "evidence": {
+            "requiredKeys": ["action", "campaignId", "revision", "phase"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"],
+            "requiredValues": {
+              "action": "created",
+              "phase": "draft"
+            }
+          },
+          "cleanup": [
+            {
+              "id": "archive-campaign",
+              "tool": "save_campaign",
+              "execution": {
+                "timeoutMs": 30000,
+                "maxAttempts": 3,
+                "retryDelayMs": 1000
+              },
+              "evidence": {
+                "requiredKeys": ["campaignId", "action"],
+                "optionalKeys": ["requestId", "traceId", "activityId"],
+                "forbiddenKeys": ["credentials"],
+                "requiredValues": {
+                  "action": "archived"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "select-terminal-product-catalog",
+          "ordinal": 5,
+          "dependsOn": ["create-draft-campaign"],
+          "tool": "get",
+          "role": "terminal-product-selection",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 90000,
+            "maxAttempts": 5,
+            "retryDelayMs": 2000
+          },
+          "evidence": {
+            "requiredKeys": [
+              "sellerId",
+              "productQueryId",
+              "productQueryRevision",
+              "resultsComplete",
+              "products"
+            ],
+            "optionalKeys": [
+              "executionId",
+              "requestId",
+              "traceId",
+              "activityId"
+            ],
+            "forbiddenKeys": ["credentials", "staleProductId"]
+          },
+          "cleanup": []
+        },
+        {
+          "id": "stage-media-buy",
+          "ordinal": 6,
+          "dependsOn": ["select-terminal-product-catalog"],
+          "tool": "save_media_buy",
+          "role": "media-buy-save",
+          "mutates": true,
+          "mutationAuthority": "explicit-confirmation-or-canary",
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 1,
+            "retryDelayMs": 0
+          },
+          "evidence": {
+            "requiredKeys": [
+              "action",
+              "mediaBuysStaged",
+              "mediaBuyId",
+              "productId",
+              "sellerId",
+              "productQueryId",
+              "productQueryRevision"
+            ],
+            "optionalKeys": [
+              "sourceId",
+              "salesAgentId",
+              "pricingOptionId",
+              "requestId",
+              "traceId",
+              "activityId"
+            ],
+            "forbiddenKeys": ["credentials", "borrowedProvenance"],
+            "requiredValues": {
+              "action": "staged",
+              "mediaBuysStaged": 1
+            }
+          },
+          "cleanup": [],
+          "cleanupOwnedBy": "create-draft-campaign"
+        },
+        {
+          "id": "create-metadata-creative",
+          "ordinal": 7,
+          "dependsOn": ["stage-media-buy"],
+          "tool": "save_creative",
+          "role": "ordinary",
+          "mutates": true,
+          "mutationAuthority": "sandbox-bound",
+          "fixtureIds": ["image-300x250-metadata-v1"],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 1,
+            "retryDelayMs": 0
+          },
+          "evidence": {
+            "requiredKeys": ["action", "creativeId", "campaignId"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials", "customerAsset"],
+            "requiredValues": {
+              "action": "created"
+            }
+          },
+          "cleanup": [
+            {
+              "id": "archive-creative",
+              "tool": "save_creative",
+              "execution": {
+                "timeoutMs": 30000,
+                "maxAttempts": 3,
+                "retryDelayMs": 1000
+              },
+              "evidence": {
+                "requiredKeys": ["creativeId", "action"],
+                "optionalKeys": ["requestId", "traceId", "activityId"],
+                "forbiddenKeys": ["credentials"],
+                "requiredValues": {
+                  "action": "archived"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "read-staged-campaign",
+          "ordinal": 8,
+          "dependsOn": ["create-metadata-creative"],
+          "tool": "get",
+          "role": "ordinary",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 2,
+            "retryDelayMs": 1000
+          },
+          "evidence": {
+            "requiredKeys": [
+              "campaignId",
+              "revision",
+              "mediaBuyId",
+              "creativeId"
+            ],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"]
+          },
+          "cleanup": []
+        },
+        {
+          "id": "preview-campaign-activation",
+          "ordinal": 9,
+          "dependsOn": ["read-staged-campaign"],
+          "tool": "save_campaign",
+          "role": "ordinary",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 1,
+            "retryDelayMs": 0
+          },
+          "evidence": {
+            "requiredKeys": [
+              "action",
+              "campaignId",
+              "revision",
+              "mediaBuyCount"
+            ],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"],
+            "requiredValues": {
+              "action": "pending_confirmation",
+              "mediaBuyCount": 1
+            }
+          },
+          "cleanup": []
+        },
+        {
+          "id": "activate-sandbox-campaign",
+          "ordinal": 10,
+          "dependsOn": ["preview-campaign-activation"],
+          "tool": "save_campaign",
+          "role": "ordinary",
+          "mutates": true,
+          "mutationAuthority": "explicit-confirmation-or-canary",
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 90000,
+            "maxAttempts": 1,
+            "retryDelayMs": 0
+          },
+          "evidence": {
+            "requiredKeys": [
+              "action",
+              "campaignId",
+              "revision",
+              "phase",
+              "mediaBuysExecuted"
+            ],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials"],
+            "requiredValues": {
+              "action": "activated",
+              "phase": "active",
+              "mediaBuysExecuted": 1
+            }
+          },
+          "cleanup": [],
+          "cleanupOwnedBy": "create-draft-campaign"
+        },
+        {
+          "id": "read-seller-media-buy",
+          "ordinal": 11,
+          "dependsOn": ["activate-sandbox-campaign"],
+          "tool": "get",
+          "role": "ordinary",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 90000,
+            "maxAttempts": 5,
+            "retryDelayMs": 2000
+          },
+          "evidence": {
+            "requiredKeys": ["mediaBuyId", "stages", "legs"],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials", "rawPayload"]
+          },
+          "cleanup": []
+        },
+        {
+          "id": "read-bounded-delivery",
+          "ordinal": 12,
+          "dependsOn": ["read-seller-media-buy"],
+          "tool": "get_delivery",
+          "role": "ordinary",
+          "mutates": false,
+          "fixtureIds": [],
+          "execution": {
+            "timeoutMs": 90000,
+            "maxAttempts": 5,
+            "retryDelayMs": 5000
+          },
+          "evidence": {
+            "requiredKeys": [
+              "report",
+              "startDate",
+              "endDate",
+              "mediaBuyId",
+              "rows"
+            ],
+            "optionalKeys": ["requestId", "traceId", "activityId"],
+            "forbiddenKeys": ["credentials", "unboundedReport"],
+            "requiredValues": {
+              "report": "campaign_delivery"
+            }
+          },
+          "cleanup": []
+        }
+      ]
+    }
+  ]
+}

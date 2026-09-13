@@ -1,0 +1,279 @@
+{
+  "schemaVersion": "2.0",
+  "contract": "deterministic-v3-tool-v1",
+  "skillId": "set-up-a-campaign",
+  "skillVersion": "1.2.0",
+  "endpoint": "/mcp/v3",
+  "modelPolicy": "deterministic-no-model",
+  "analytics": {
+    "retention": "metadata-only",
+    "allowlist": [
+      "runId",
+      "skillId",
+      "skillVersion",
+      "skillDigest",
+      "stepId",
+      "attempt",
+      "tool",
+      "requestId",
+      "traceId",
+      "activityId",
+      "terminalState",
+      "assertionResults",
+      "cleanupTerminalState",
+      "errorCode"
+    ],
+    "forbidden": [
+      "rawPrompt",
+      "skillQuery",
+      "matchedTerms",
+      "instructions",
+      "credentials",
+      "signedUrls",
+      "briefs",
+      "creatives",
+      "customerPayloads"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "sandbox-advertiser-round-trip",
+      "title": "Create, read, and retire one sandbox advertiser",
+      "description": "Create one run-scoped sandbox advertiser through the ordinary V3 buyer surface, read the exact advertiser back, and confirm archival during cleanup.",
+      "mutationBoundary": "Creates only one sandbox advertiser in the authorized buyer fixture, performs no seller dispatch or spend, and always archives that exact advertiser.",
+      "cleanupPolicy": "always-reverse-order",
+      "runInputs": [
+        {
+          "name": "advertiserName",
+          "source": "server_template",
+          "template": "Interchange-skill-canary-{serverRunId}",
+          "maxLength": 200
+        },
+        {
+          "name": "createIdempotencyKey",
+          "source": "server_template",
+          "template": "set-up-a-campaign-1.2.0-{serverRunId}",
+          "maxLength": 255
+        },
+        {
+          "name": "brand",
+          "source": "constant",
+          "value": "scope3.com"
+        },
+        {
+          "name": "primaryCurrency",
+          "source": "constant",
+          "value": "USD"
+        }
+      ],
+      "steps": [
+        {
+          "id": "check-account-status",
+          "ordinal": 1,
+          "dependsOn": [],
+          "tool": "get_status",
+          "role": "ordinary",
+          "mutates": false,
+          "arguments": {},
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 2,
+            "retryDelayMs": 1000,
+            "idempotency": "read_only"
+          },
+          "evidence": {
+            "projection": "structured_tool_response",
+            "requiredPointers": [
+              "/structuredContent/account/accountId",
+              "/structuredContent/state"
+            ],
+            "optionalPointers": []
+          },
+          "outputBindings": [],
+          "cleanup": []
+        },
+        {
+          "id": "create-sandbox-advertiser",
+          "ordinal": 2,
+          "dependsOn": ["check-account-status"],
+          "tool": "save_advertiser",
+          "role": "ordinary",
+          "mutates": true,
+          "mutationAuthority": "sandbox-bound",
+          "arguments": {
+            "name": { "source": "run_input", "name": "advertiserName" },
+            "brand": { "source": "run_input", "name": "brand" },
+            "primaryCurrency": {
+              "source": "run_input",
+              "name": "primaryCurrency"
+            },
+            "sandbox": { "source": "literal", "value": true },
+            "idempotencyKey": {
+              "source": "run_input",
+              "name": "createIdempotencyKey"
+            },
+            "correlationId": {
+              "source": "attempt",
+              "name": "correlationId"
+            }
+          },
+          "execution": {
+            "timeoutMs": 60000,
+            "maxAttempts": 3,
+            "retryDelayMs": 1000,
+            "idempotency": "stable_key"
+          },
+          "evidence": {
+            "projection": "structured_tool_response",
+            "requiredPointers": [
+              "/structuredContent/action",
+              "/structuredContent/advertiser/advertiserId",
+              "/structuredContent/advertiser/sandbox"
+            ],
+            "optionalPointers": [],
+            "requiredValues": {
+              "/structuredContent/action": "created",
+              "/structuredContent/advertiser/sandbox": true
+            }
+          },
+          "outputBindings": [
+            {
+              "name": "advertiserId",
+              "pointer": "/structuredContent/advertiser/advertiserId"
+            }
+          ],
+          "recovery": {
+            "trigger": "unknown_outcome_after_replay",
+            "replay": {
+              "strategy": "same_arguments_except_attempt_correlation",
+              "stableArguments": [
+                "name",
+                "brand",
+                "primaryCurrency",
+                "sandbox",
+                "idempotencyKey"
+              ],
+              "freshArguments": ["correlationId"]
+            },
+            "fallback": {
+              "tool": "search",
+              "arguments": {
+                "kind": { "source": "literal", "value": "advertiser" },
+                "query": {
+                  "source": "run_input",
+                  "name": "advertiserName"
+                },
+                "filter": {
+                  "source": "literal",
+                  "value": { "sandbox": true, "status": "ALL" }
+                }
+              },
+              "match": {
+                "listPointer": "/structuredContent/objects/results",
+                "cardinality": "exactly_one",
+                "predicates": [
+                  {
+                    "pointer": "/name",
+                    "source": "run_input",
+                    "name": "advertiserName"
+                  },
+                  {
+                    "pointer": "/sandbox",
+                    "source": "literal",
+                    "value": true
+                  }
+                ],
+                "outputBinding": {
+                  "name": "advertiserId",
+                  "pointer": "/advertiserId"
+                }
+              }
+            }
+          },
+          "cleanup": [
+            {
+              "id": "archive-sandbox-advertiser",
+              "tool": "save_advertiser",
+              "arguments": {
+                "advertiserId": {
+                  "source": "step_binding",
+                  "name": "advertiserId"
+                },
+                "isArchived": { "source": "literal", "value": true },
+                "correlationId": {
+                  "source": "attempt",
+                  "name": "correlationId"
+                }
+              },
+              "execution": {
+                "timeoutMs": 60000,
+                "maxAttempts": 3,
+                "retryDelayMs": 1000,
+                "idempotency": "server_idempotent"
+              },
+              "evidence": {
+                "projection": "structured_tool_response",
+                "requiredPointers": [
+                  "/structuredContent/action",
+                  "/structuredContent/advertiserId"
+                ],
+                "optionalPointers": [],
+                "requiredValues": {
+                  "/structuredContent/action": "archived"
+                },
+                "requiredMatches": [
+                  {
+                    "pointer": "/structuredContent/advertiserId",
+                    "binding": "advertiserId"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "read-sandbox-advertiser",
+          "ordinal": 3,
+          "dependsOn": ["create-sandbox-advertiser"],
+          "tool": "get",
+          "role": "ordinary",
+          "mutates": false,
+          "arguments": {
+            "kind": { "source": "literal", "value": "advertiser" },
+            "id": {
+              "source": "step_binding",
+              "name": "advertiserId"
+            }
+          },
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 2,
+            "retryDelayMs": 1000,
+            "idempotency": "read_only"
+          },
+          "evidence": {
+            "projection": "structured_tool_response",
+            "requiredPointers": [
+              "/structuredContent/kind",
+              "/structuredContent/object/advertiserId",
+              "/structuredContent/object/sandbox"
+            ],
+            "optionalPointers": [],
+            "requiredValues": {
+              "/structuredContent/kind": "advertiser",
+              "/structuredContent/object/sandbox": true
+            },
+            "requiredMatches": [
+              {
+                "pointer": "/structuredContent/object/advertiserId",
+                "binding": "advertiserId"
+              }
+            ]
+          },
+          "outputBindings": [],
+          "cleanup": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,25 +1,185 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "interchange-plugin",
-  "description": "Scope3 Interchange plugins for Claude Code and Cowork.",
+  "description": "Interchange workflow packages for Claude Code and Cowork.",
   "owner": {
     "name": "Scope3 PBC",
     "email": "engineering@scope3.com"
   },
   "plugins": [
     {
-      "name": "interchange",
-      "description": "Plan, buy, and manage advertising through the Interchange V3 MCP server.",
+      "name": "amc-listing",
+      "description": "Build and maintain an Agentic Media Company listing in Interchange.",
       "author": {
         "name": "Scope3 PBC",
         "url": "https://interchange.io"
       },
-      "source": "./",
+      "source": "./plugins/amc-listing",
+      "category": "productivity",
+      "keywords": [
+        "advertising",
+        "listing",
+        "mcp"
+      ],
+      "homepage": "https://docs.interchange.io",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "amc-merchandising",
+      "description": "Merchandise an Agentic Media Company's inventory and products in Interchange.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./plugins/amc-merchandising",
+      "category": "productivity",
+      "keywords": [
+        "advertising",
+        "inventory",
+        "products",
+        "mcp"
+      ],
+      "homepage": "https://docs.interchange.io",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "amc-distribution",
+      "description": "Prepare and distribute an Agentic Media Company through supported agent channels.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./plugins/amc-distribution",
+      "category": "deployment",
+      "keywords": [
+        "advertising",
+        "distribution",
+        "mcp"
+      ],
+      "homepage": "https://docs.interchange.io",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "amc-campaign-management",
+      "description": "Operate seller-side campaigns and delivery in Interchange.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./plugins/amc-campaign-management",
       "category": "productivity",
       "keywords": [
         "advertising",
         "campaigns",
-        "media-buying",
+        "delivery",
+        "mcp"
+      ],
+      "homepage": "https://docs.interchange.io",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "buyer-account-setup",
+      "description": "Prepare an Interchange buyer account for campaign execution.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./plugins/buyer-account-setup",
+      "category": "productivity",
+      "keywords": [
+        "advertising",
+        "buyer",
+        "account",
+        "mcp"
+      ],
+      "homepage": "https://docs.interchange.io",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "buyer-campaign-management",
+      "description": "Discover sellers, create campaigns, request proposals, and manage delivery.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./plugins/buyer-campaign-management",
+      "category": "productivity",
+      "keywords": [
+        "advertising",
+        "buyer",
+        "campaigns",
+        "mcp"
+      ],
+      "homepage": "https://docs.interchange.io",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "buyer-creative-management",
+      "description": "Prepare and inspect buyer creative inputs for campaign execution.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./plugins/buyer-creative-management",
+      "category": "productivity",
+      "keywords": [
+        "advertising",
+        "buyer",
+        "creative",
+        "mcp"
+      ],
+      "homepage": "https://docs.interchange.io",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "buyer-reporting",
+      "description": "Inspect buyer campaign delivery and reporting in Interchange.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./plugins/buyer-reporting",
+      "category": "monitoring",
+      "keywords": [
+        "advertising",
+        "buyer",
+        "reporting",
+        "mcp"
+      ],
+      "homepage": "https://docs.interchange.io",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "sales-agent-testing",
+      "description": "Test a first-party or third-party AdCP sales agent with governed buyer workflows.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./plugins/sales-agent-testing",
+      "category": "testing",
+      "keywords": [
+        "advertising",
+        "adcp",
+        "sales-agent",
+        "testing"
+      ],
+      "homepage": "https://docs.interchange.io",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "amc-self-serve-buyer",
+      "description": "Bundle buyer workflows for an Agentic Media Company's own self-serve plugin.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./plugins/amc-self-serve-buyer",
+      "category": "productivity",
+      "keywords": [
+        "advertising",
+        "buyer",
+        "self-serve",
         "mcp"
       ],
       "homepage": "https://docs.interchange.io",

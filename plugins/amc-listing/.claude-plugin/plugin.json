@@ -1,0 +1,19 @@
+{
+  "name": "amc-listing",
+  "displayName": "AMC Listing",
+  "description": "Build and maintain an Agentic Media Company listing in Interchange.",
+  "version": "1.0.0+170e8d2436ba",
+  "author": {
+    "name": "Scope3 PBC",
+    "url": "https://interchange.io"
+  },
+  "homepage": "https://docs.interchange.io",
+  "repository": "https://github.com/scope3data/interchange-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "advertising",
+    "listing",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json"
+}
