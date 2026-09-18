@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0",
+  "skillId": "set-up-an-event-source",
+  "skillVersion": "1.0.0",
+  "scenarios": [
+    {
+      "id": "reuse-native-social-source",
+      "title": "Reuse an authorized native social source",
+      "given": "The connected platform or product returns an exact native event-source ID for the advertiser.",
+      "expect": [
+        "The agent searches the advertiser's measurement sources before writing.",
+        "The agent uses only the returned native ID and does not create or invent a pixel.",
+        "The completion report separates provider authorization, source health, and campaign attachment."
+      ]
+    },
+    {
+      "id": "register-partner-server-feed",
+      "title": "Register a measurement partner as a server feed",
+      "given": "The buyer names a measurement partner but connection discovery does not return a native connector.",
+      "expect": [
+        "The agent registers an event source with the partner named as integrationPlatform and an explicit mapping.",
+        "The agent returns the server-only setup instructions and does not claim the integration is receiving until health says receiving.",
+        "The agent uses object.eventSourceId, not the event-prefixed noun ID, when attaching a conversion goal."
+      ]
+    }
+  ]
+}
