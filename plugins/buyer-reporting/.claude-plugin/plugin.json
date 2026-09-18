@@ -2,7 +2,7 @@
   "name": "buyer-reporting",
   "displayName": "Buyer Reporting",
   "description": "Inspect buyer campaign delivery and reporting in Interchange.",
-  "version": "1.0.0+f588c076d2d3",
+  "version": "1.0.0+fb7eddc99041",
   "author": {
     "name": "Scope3 PBC",
     "url": "https://interchange.io"
@@ -16,5 +16,6 @@
     "reporting",
     "mcp"
   ],
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/"
 }
