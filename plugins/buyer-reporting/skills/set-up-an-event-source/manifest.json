@@ -1,9 +1,9 @@
 {
   "schemaVersion": "3.0",
-  "id": "set-up-a-campaign",
-  "name": "Set Up a Campaign",
-  "version": "1.3.0",
-  "description": "Create a grounded buyer campaign with conversion tracking, request proposals, compare supply, and stage a selected media buy.",
+  "id": "set-up-an-event-source",
+  "name": "Set Up an Event Source",
+  "version": "1.0.0",
+  "description": "Set up or reuse advertiser conversion tracking for social platforms, direct event feeds, and measurement partners.",
   "steward": {
     "owner": "bokelley"
   },
@@ -40,35 +40,24 @@
     "submissionBundleAccountKinds": ["buyer"]
   },
   "tools": {
-    "required": [
-      "get_status",
-      "search",
-      "get",
-      "save_advertiser",
-      "save_measurement_source",
-      "save_campaign",
-      "request_proposals",
-      "save_media_buy"
-    ],
-    "optional": [
-      "save_creative",
-      "save_creative_collection",
-      "upload_creative_asset"
-    ]
+    "required": ["get_status", "search", "get", "save_measurement_source"],
+    "optional": ["save_campaign"]
   },
   "documentation": [
-    "mintlify/v2/setup/v3/buyer-workflows.mdx",
     "mintlify/v2/guides/log-events.mdx",
-    "mintlify/v2/features/sandbox.mdx",
+    "mintlify/v2/setup/v3/buyer-workflows.mdx",
     "mintlify/v2/skill.mdx"
   ],
   "evaluation": {
     "acceptance": {
       "scenarioAsset": "references/scenarios.json",
-      "scenarioIds": ["conversion-source-before-campaign"]
+      "scenarioIds": [
+        "reuse-native-social-source",
+        "register-partner-server-feed"
+      ]
     },
     "telemetry": {
-      "correlationSkillId": "set-up-a-campaign@1.3.0",
+      "correlationSkillId": "set-up-an-event-source@1.0.0",
       "outcomeSignals": [
         "workflow_terminal_state",
         "measurement_source_action_receipt",
