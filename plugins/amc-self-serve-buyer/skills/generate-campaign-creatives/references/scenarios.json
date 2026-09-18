@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "2.0",
+  "contract": "deterministic-v3-tool-v1",
+  "skillId": "generate-campaign-creatives",
+  "skillVersion": "1.0.0",
+  "endpoint": "/mcp/v3",
+  "modelPolicy": "deterministic-no-model",
+  "analytics": {
+    "retention": "metadata-only",
+    "allowlist": [
+      "runId",
+      "skillId",
+      "skillVersion",
+      "skillDigest",
+      "stepId",
+      "attempt",
+      "tool",
+      "requestId",
+      "traceId",
+      "activityId",
+      "terminalState",
+      "assertionResults",
+      "errorCode"
+    ],
+    "forbidden": [
+      "rawPrompt",
+      "skillQuery",
+      "matchedTerms",
+      "instructions",
+      "credentials",
+      "signedUrls",
+      "briefs",
+      "creatives",
+      "customerPayloads"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "creative-engine-discovery-no-spend",
+      "title": "Discover enrolled Creative Engines without generation",
+      "description": "Read buyer readiness and the account-visible creative-engine catalogue without creating a connection, submitting a generation action, or selecting funding.",
+      "mutationBoundary": "Read-only discovery only; performs no connection mutation, provider request, generation action, campaign launch, or spend.",
+      "cleanupPolicy": "always-reverse-order",
+      "runInputs": [
+        {
+          "name": "creativeEngineKind",
+          "source": "constant",
+          "value": "creative_engine"
+        }
+      ],
+      "steps": [
+        {
+          "id": "check-account-status",
+          "ordinal": 1,
+          "dependsOn": [],
+          "tool": "get_status",
+          "role": "ordinary",
+          "mutates": false,
+          "arguments": {},
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 2,
+            "retryDelayMs": 1000,
+            "idempotency": "read_only"
+          },
+          "evidence": {
+            "projection": "structured_tool_response",
+            "requiredPointers": [
+              "/structuredContent/account/accountId",
+              "/structuredContent/state"
+            ],
+            "optionalPointers": []
+          },
+          "outputBindings": [],
+          "cleanup": []
+        },
+        {
+          "id": "discover-creative-engines",
+          "ordinal": 2,
+          "dependsOn": ["check-account-status"],
+          "tool": "search",
+          "role": "ordinary",
+          "mutates": false,
+          "arguments": {
+            "kind": {
+              "source": "run_input",
+              "name": "creativeEngineKind"
+            }
+          },
+          "execution": {
+            "timeoutMs": 30000,
+            "maxAttempts": 2,
+            "retryDelayMs": 1000,
+            "idempotency": "read_only"
+          },
+          "evidence": {
+            "projection": "structured_tool_response",
+            "requiredPointers": ["/structuredContent/objects/results"],
+            "optionalPointers": []
+          },
+          "outputBindings": [],
+          "cleanup": []
+        }
+      ]
+    }
+  ]
+}
