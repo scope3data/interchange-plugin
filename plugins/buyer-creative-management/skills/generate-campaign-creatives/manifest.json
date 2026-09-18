@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "3.0",
+  "id": "generate-campaign-creatives",
+  "name": "Generate Campaign Creatives",
+  "version": "1.0.0",
+  "description": "Create, refine, approve, and finalise a campaign-scoped Creative Session through an enrolled buyer's connected Creative Engine.",
+  "steward": {
+    "owner": "bokelley"
+  },
+  "entrypoint": "SKILL.md",
+  "assets": [
+    {
+      "route": "SKILL.md",
+      "file": "SKILL.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "manifest.json",
+      "file": "manifest.json",
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "route": "references/scenarios.json",
+      "file": "references/scenarios.json",
+      "contentType": "application/json; charset=utf-8"
+    }
+  ],
+  "applicability": {
+    "audiences": [
+      {
+        "accountKind": "buyer",
+        "clientChannels": ["standard", "white_label_chatgpt"],
+        "requiredCapabilities": [],
+        "requiredFeatureEntitlements": [],
+        "requiredFeatureFlags": ["creative-engines"]
+      }
+    ]
+  },
+  "distribution": {
+    "mcpAccountKinds": ["buyer"],
+    "submissionBundleAccountKinds": ["buyer"]
+  },
+  "tools": {
+    "required": [
+      "get_status",
+      "search",
+      "get",
+      "save_connection",
+      "save_creative_session",
+      "generate_variants"
+    ],
+    "optional": []
+  },
+  "documentation": [
+    "mintlify/v2/setup/v3/creative-engines.mdx",
+    "mintlify/v2/buyer/creatives/generative-creative.mdx",
+    "mintlify/v2/skill.mdx"
+  ],
+  "evaluation": {
+    "acceptance": {
+      "scenarioAsset": "references/scenarios.json",
+      "scenarioIds": ["creative-engine-discovery-no-spend"],
+      "scenarioContract": "deterministic-v3-tool-v1"
+    },
+    "telemetry": {
+      "correlationSkillId": "generate-campaign-creatives@1.0.0",
+      "outcomeSignals": [
+        "workflow_terminal_state",
+        "scenario_assertion_results",
+        "creative_session_action_receipt"
+      ]
+    }
+  }
+}
