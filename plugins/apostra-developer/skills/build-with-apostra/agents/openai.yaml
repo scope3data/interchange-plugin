@@ -1,0 +1,12 @@
+interface:
+  display_name: "Build with Apostra"
+  short_description: "Connect Apostra and build a tested integration"
+  default_prompt: "Use $build-with-apostra to connect this repository to Apostra and build a tested seller discovery prototype."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "interchange"
+      description: "Apostra account-resolved MCP server"
+      transport: "streamable_http"
+      url: "https://api.interchange.io/mcp/v3"

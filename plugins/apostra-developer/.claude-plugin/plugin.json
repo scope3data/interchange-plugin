@@ -1,0 +1,26 @@
+{
+  "name": "apostra-developer",
+  "displayName": "Apostra Developer",
+  "description": "Plan, run, automate, and report on advertising across sellers, or build those jobs into an application.",
+  "version": "1.0.0+01db25a53c32",
+  "author": {
+    "name": "Scope3 PBC",
+    "url": "https://interchange.io"
+  },
+  "homepage": "https://docs.interchange.io/v3/overview",
+  "repository": "https://github.com/scope3data/interchange-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "apostra",
+    "advertising",
+    "campaign automation",
+    "growth marketing",
+    "media buying",
+    "reporting",
+    "developer",
+    "mcp",
+    "agents"
+  ],
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/"
+}
