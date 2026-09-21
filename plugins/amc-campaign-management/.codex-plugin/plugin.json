@@ -1,0 +1,35 @@
+{
+  "name": "amc-campaign-management",
+  "version": "1.0.0+ab6f45c1d871",
+  "description": "Operate seller-side campaigns and delivery in Interchange.",
+  "author": {
+    "name": "Scope3 PBC",
+    "url": "https://interchange.io"
+  },
+  "homepage": "https://docs.interchange.io",
+  "repository": "https://github.com/scope3data/interchange-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "advertising",
+    "campaigns",
+    "delivery",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "AMC Campaign Management",
+    "shortDescription": "Operate seller-side campaigns and delivery in Interchange.",
+    "longDescription": "Operate seller-side campaigns and delivery in Interchange.",
+    "developerName": "Scope3 PBC",
+    "category": "Productivity",
+    "capabilities": [
+      "Apostra MCP"
+    ],
+    "websiteURL": "https://docs.interchange.io",
+    "defaultPrompt": [
+      "Help me use AMC Campaign Management with Apostra."
+    ],
+    "composerIcon": "./assets/composer-icon.png",
+    "logo": "./assets/directory-icon.png"
+  }
+}

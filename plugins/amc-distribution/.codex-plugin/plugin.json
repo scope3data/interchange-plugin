@@ -1,0 +1,36 @@
+{
+  "name": "amc-distribution",
+  "version": "1.0.0+886dc10e672b",
+  "description": "Prepare and distribute an Agentic Media Company through supported agent channels.",
+  "author": {
+    "name": "Scope3 PBC",
+    "url": "https://interchange.io"
+  },
+  "homepage": "https://docs.interchange.io",
+  "repository": "https://github.com/scope3data/interchange-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "advertising",
+    "distribution",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "AMC Distribution",
+    "shortDescription": "Prepare and distribute an Agentic Media Company through supported agent channels.",
+    "longDescription": "Prepare and distribute an Agentic Media Company through supported agent channels.",
+    "developerName": "Scope3 PBC",
+    "category": "Deployment",
+    "capabilities": [
+      "Apostra MCP",
+      "Agent skill"
+    ],
+    "websiteURL": "https://docs.interchange.io",
+    "defaultPrompt": [
+      "Help me use AMC Distribution with Apostra."
+    ],
+    "composerIcon": "./assets/composer-icon.png",
+    "logo": "./assets/directory-icon.png"
+  }
+}
