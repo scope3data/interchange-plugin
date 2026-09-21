@@ -1,23 +1,48 @@
-# Interchange plugin marketplace
+# Apostra developer marketplace
 
-Install only the workflow packages relevant to your role. Packages select
-instructions and starter workflows; they do not grant account permissions.
-Interchange OAuth and server-side entitlements remain authoritative.
+Connect a coding agent to Apostra, verify the account, and build an advertising
+workflow. Start with `apostra-developer`; install the narrower operating
+packages only when you need them. Packages do not grant account permissions.
+Apostra OAuth and server-side entitlements remain authoritative.
 
-## Install
+## Install in Codex
+
+```sh
+codex plugin marketplace add scope3data/interchange-plugin
+codex plugin add apostra-developer@interchange-plugin
+```
+
+The native plugin installs both the `build-with-apostra` skill and the Apostra
+MCP connection. Complete OAuth when prompted, then ask Codex: "Verify my
+Apostra account and help me build a seller discovery prototype."
+
+## Install in Claude Code
 
 ```
 /plugin marketplace add scope3data/interchange-plugin
-/plugin install buyer-campaign-management@interchange-plugin
+/plugin install apostra-developer@interchange-plugin
 ```
 
 Complete OAuth when prompted. Never paste API keys or provider credentials
 into a prompt.
 
+## Install the skill in another compatible agent
+
+```sh
+npx skills add scope3data/interchange-plugin \
+  --skill build-with-apostra \
+  --yes
+```
+
+This route installs the instructions only. Connect the agent's MCP client to
+`https://api.interchange.io/mcp/v3`, complete OAuth, and run the read-only
+`get_status` check before building.
+
 ## Packages
 
 | Package | Purpose | Current canonical skills |
 |---|---|---|
+| `apostra-developer` | Plan, run, automate, and report on advertising across sellers, or build those jobs into an application. | `build-with-apostra@1.0.0` |
 | `amc-listing` | Build and maintain an Agentic Media Company listing in Interchange. | MCP access; workflow skill forthcoming |
 | `amc-merchandising` | Merchandise an Agentic Media Company's inventory and products in Interchange. | MCP access; workflow skill forthcoming |
 | `amc-distribution` | Prepare and distribute an Agentic Media Company through supported agent channels. | `publish-an-openai-app@1.0.0` |
@@ -37,8 +62,8 @@ Skill files are composed from the canonical, versioned Interchange skill
 registry. When a registry current-version pointer or referenced asset changes,
 the source workflow opens a reviewed sync PR for this repository.
 
-Every durable change remains confirmation-gated by the underlying Interchange
-tool contract. Full documentation lives at https://docs.interchange.io.
+Every durable change remains confirmation-gated by the underlying Apostra
+tool contract. Build guides live at https://docs.interchange.io/v3/overview.
 
 ## License
 
