@@ -1,0 +1,37 @@
+{
+  "name": "amc-self-serve-buyer",
+  "version": "1.0.0+1af684d1fcc6",
+  "description": "Bundle buyer workflows for an Agentic Media Company's own self-serve plugin.",
+  "author": {
+    "name": "Scope3 PBC",
+    "url": "https://interchange.io"
+  },
+  "homepage": "https://docs.interchange.io",
+  "repository": "https://github.com/scope3data/interchange-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "advertising",
+    "buyer",
+    "self-serve",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "AMC Self-Serve Buyer",
+    "shortDescription": "Bundle buyer workflows for an Agentic Media Company's own self-serve plugin.",
+    "longDescription": "Bundle buyer workflows for an Agentic Media Company's own self-serve plugin.",
+    "developerName": "Scope3 PBC",
+    "category": "Productivity",
+    "capabilities": [
+      "Apostra MCP",
+      "Agent skill"
+    ],
+    "websiteURL": "https://docs.interchange.io",
+    "defaultPrompt": [
+      "Help me use AMC Self-Serve Buyer with Apostra."
+    ],
+    "composerIcon": "./assets/composer-icon.png",
+    "logo": "./assets/directory-icon.png"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0",
+  "skillId": "build-with-apostra",
+  "skillVersion": "1.0.0",
+  "scenarios": [
+    {
+      "id": "install-and-discover",
+      "title": "Install Apostra and build a seller discovery prototype",
+      "given": "A TypeScript repository has a package manager and test runner but no Apostra connection. The developer asks for a seller discovery prototype.",
+      "expect": [
+        "The agent inspects the repository and reuses its conventions before scaffolding.",
+        "It connects MCP directly, marks native plugin installation as pending mirror publication and fresh-install verification, completes host OAuth, and calls get_status before any account mutation.",
+        "It discovers the current search schema and uses only read-only seller discovery for the first live example.",
+        "The local fixture test proves successful discovery and an error or continuation case; the agent runs it and reports the observed result.",
+        "The report separates installation, authentication, live account access, and local test evidence."
+      ]
+    },
+    {
+      "id": "instructions-without-connector",
+      "title": "Complete an instructions-only installation",
+      "given": "The developer installed the skill with npx skills. No MCP tools are available and the browser OAuth handoff cannot complete in the current session.",
+      "expect": [
+        "The agent identifies that instructions were installed but the connector is absent.",
+        "It gives the documented remote MCP connection and host login step without requesting a pasted token.",
+        "It completes and runs the deterministic local example when possible, marking OAuth and live access as incomplete.",
+        "It neither invents account data nor performs remote mutations to work around missing authentication."
+      ]
+    },
+    {
+      "id": "durable-buyer-agent",
+      "title": "Resume a buyer-agent workflow after restart",
+      "given": "The developer wants an independently operated buyer agent that compares proposals and waits for an authorized person to launch. The process may restart after a proposal request or launch preview.",
+      "expect": [
+        "The agent chooses a durable application boundary and distinguishes independent agent registration from a user's interactive connection.",
+        "It retrieves current agent-management documentation and the account catalog instead of inventing a hosted runtime or an unavailable API.",
+        "The implementation persists request handles, exact offer identities, revisions, and approvals and resumes by reading the saved operation.",
+        "A deterministic restart test proves no duplicate request, and a changed-revision test proves launch cannot reuse stale approval.",
+        "The workflow preserves the separate launch preview and confirmation calls."
+      ]
+    },
+    {
+      "id": "reporting-pipeline",
+      "title": "Send campaign reporting to an existing warehouse",
+      "given": "A Python backend already has a daily scheduler and needs aggregate campaign data in its warehouse. Yesterday's delivery may be corrected, and the destination can fail during a write.",
+      "expect": [
+        "The agent reuses the existing scheduler and selects the documented REST reporting contract for deterministic pulls.",
+        "It verifies authorized resource access with a read before configuring a remote write and does not reuse an MCP OAuth token for REST.",
+        "The output preserves currency, time window, unavailable values, and data-source meaning.",
+        "A deterministic test repeats a window and fails a destination write, proving upsert and checkpoint recovery without lost or double-counted rows.",
+        "The agent reports freshness from observed evidence and does not claim a scheduled pipeline is delivering before its output is observed."
+      ]
+    },
+    {
+      "id": "event-ingestion-handoff",
+      "title": "Connect a CRM event sender",
+      "given": "The developer wants CRM conversion events attached to an advertiser. The named CRM has no discovered native connector, and the newly configured source has not received production events.",
+      "expect": [
+        "The agent retrieves the applicable source workflow, searches existing advertiser sources, and does not invent a native connector.",
+        "It builds and tests a sender using the documented event ingestion contract with stable event IDs and partial-failure handling.",
+        "It distinguishes source configuration, accepted test traffic, production health, and optional campaign attachment.",
+        "It does not send production data merely to make setup verification pass."
+      ]
+    },
+    {
+      "id": "sales-agent-validation",
+      "title": "Test an owned sales agent without buying live media",
+      "given": "A seller asks the developer to test their AdCP agent's discovery and purchase flow, with a particular source as the target.",
+      "expect": [
+        "The agent verifies the account and retrieves its eligible test-sales-agent version before mutations.",
+        "It uses the least-mutating declared scenario and retains structured sandbox and exact target evidence.",
+        "It refuses to stage provisional or unattributable products and preserves the scenario's confirmations.",
+        "It executes reverse cleanup after failure as well as success and reports any remaining resources.",
+        "The report distinguishes observed assertions from unexercised creative handoff, delivery, and certification."
+      ]
+    }
+  ]
+}
