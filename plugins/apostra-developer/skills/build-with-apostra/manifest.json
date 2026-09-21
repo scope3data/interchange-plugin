@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "3.0",
+  "id": "build-with-apostra",
+  "name": "Build with Apostra",
+  "version": "1.0.0",
+  "description": "Use Apostra to plan or run ads, automate campaign work, read results, or build those jobs into tested software.",
+  "steward": {
+    "owner": "bokelley"
+  },
+  "entrypoint": "SKILL.md",
+  "assets": [
+    {
+      "route": "SKILL.md",
+      "file": "SKILL.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "manifest.json",
+      "file": "manifest.json",
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "route": "agents/openai.yaml",
+      "file": "agents/openai.yaml",
+      "contentType": "application/yaml; charset=utf-8"
+    },
+    {
+      "route": "references/connection.md",
+      "file": "references/connection.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "references/agents.md",
+      "file": "references/agents.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "references/data-pipelines.md",
+      "file": "references/data-pipelines.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "references/sales-agent-testing.md",
+      "file": "references/sales-agent-testing.md",
+      "contentType": "text/markdown; charset=utf-8"
+    },
+    {
+      "route": "references/scenarios.json",
+      "file": "references/scenarios.json",
+      "contentType": "application/json; charset=utf-8"
+    }
+  ],
+  "applicability": {
+    "audiences": [
+      {
+        "accountKind": "buyer",
+        "clientChannels": ["standard"],
+        "requiredCapabilities": [],
+        "requiredFeatureEntitlements": []
+      },
+      {
+        "accountKind": "seller",
+        "clientChannels": ["standard"],
+        "requiredCapabilities": [],
+        "requiredFeatureEntitlements": []
+      }
+    ]
+  },
+  "distribution": {
+    "mcpAccountKinds": [],
+    "submissionBundleAccountKinds": []
+  },
+  "tools": {
+    "required": ["get_status", "search", "get"],
+    "optional": [
+      "switch_account",
+      "save_buyer_agent",
+      "save_connection",
+      "save_advertiser",
+      "save_campaign",
+      "save_media_buy",
+      "save_measurement_source",
+      "request_proposals",
+      "get_delivery"
+    ]
+  },
+  "documentation": [
+    "mintlify/v3/overview.mdx",
+    "mintlify/v3/choose-your-loop.mdx",
+    "mintlify/v3/quickstart.mdx",
+    "mintlify/v3/build-an-agent.mdx",
+    "mintlify/v3/bring-data-in.mdx",
+    "mintlify/v3/reporting-pipeline.mdx",
+    "mintlify/v2/setup/v3/buyer-workflows.mdx",
+    "mintlify/v2/setup/v3/seller-workflows.mdx",
+    "mintlify/v2/setup/buyer-agent-credentials.mdx",
+    "mintlify/v2/features/sandbox.mdx"
+  ],
+  "evaluation": {
+    "acceptance": {
+      "scenarioAsset": "references/scenarios.json",
+      "scenarioIds": [
+        "install-and-discover",
+        "instructions-without-connector",
+        "durable-buyer-agent",
+        "reporting-pipeline",
+        "event-ingestion-handoff",
+        "sales-agent-validation"
+      ]
+    },
+    "telemetry": {
+      "correlationSkillId": "build-with-apostra@1.0.0",
+      "outcomeSignals": [
+        "workflow_terminal_state",
+        "scenario_assertion_results"
+      ]
+    }
+  }
+}

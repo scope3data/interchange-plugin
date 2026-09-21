@@ -8,6 +8,29 @@
   },
   "plugins": [
     {
+      "name": "apostra-developer",
+      "description": "Plan, run, automate, and report on advertising across sellers, or build those jobs into an application.",
+      "author": {
+        "name": "Scope3 PBC",
+        "url": "https://interchange.io"
+      },
+      "source": "./plugins/apostra-developer",
+      "category": "development",
+      "keywords": [
+        "apostra",
+        "advertising",
+        "campaign automation",
+        "growth marketing",
+        "media buying",
+        "reporting",
+        "developer",
+        "mcp",
+        "agents"
+      ],
+      "homepage": "https://docs.interchange.io/v3/overview",
+      "license": "Apache-2.0"
+    },
+    {
       "name": "amc-listing",
       "description": "Build and maintain an Agentic Media Company listing in Interchange.",
       "author": {

@@ -1,0 +1,140 @@
+{
+  "name": "interchange-plugin",
+  "interface": {
+    "displayName": "Apostra"
+  },
+  "plugins": [
+    {
+      "name": "apostra-developer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/apostra-developer"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development"
+    },
+    {
+      "name": "amc-listing",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amc-listing"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "amc-merchandising",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amc-merchandising"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "amc-distribution",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amc-distribution"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Deployment"
+    },
+    {
+      "name": "amc-campaign-management",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amc-campaign-management"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "buyer-account-setup",
+      "source": {
+        "source": "local",
+        "path": "./plugins/buyer-account-setup"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "buyer-campaign-management",
+      "source": {
+        "source": "local",
+        "path": "./plugins/buyer-campaign-management"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "buyer-creative-management",
+      "source": {
+        "source": "local",
+        "path": "./plugins/buyer-creative-management"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "buyer-reporting",
+      "source": {
+        "source": "local",
+        "path": "./plugins/buyer-reporting"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Monitoring"
+    },
+    {
+      "name": "sales-agent-testing",
+      "source": {
+        "source": "local",
+        "path": "./plugins/sales-agent-testing"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Testing"
+    },
+    {
+      "name": "amc-self-serve-buyer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/amc-self-serve-buyer"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
